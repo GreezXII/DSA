@@ -1,0 +1,147 @@
+﻿<Window
+    x:Class="RectangularRule.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:RectangularRule"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="400"
+    Height="550"
+    ResizeMode="CanMinimize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <!--  Функция  -->
+        <Label Content="y = 1 + x + Sin(2 * x)" />
+
+        <!--  Макет  -->
+        <Frame
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="10"
+            BorderBrush="Black"
+            BorderThickness="2">
+            <Frame.Content>
+                <Canvas
+                    x:Name="MainCanvas"
+                    Margin="10"
+                    ClipToBounds="True"
+                    Loaded="OnCanvasLoaded"
+                    RenderTransformOrigin="0.5 0.5">
+                    <Canvas.RenderTransform>
+                        <ScaleTransform ScaleY="-1" />
+                    </Canvas.RenderTransform>
+                </Canvas>
+            </Frame.Content>
+        </Frame>
+
+        <StackPanel x:Name="typeSP" Grid.Row="2">
+            <RadioButton
+                Content="Rectangle"
+                GroupName="type"
+                IsChecked="True" />
+            <RadioButton Content="Trapezoid" GroupName="type" />
+        </StackPanel>
+        <!--  Данные для графика  -->
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!--  X от  -->
+            <StackPanel Orientation="Horizontal">
+                <Label Content="X" />
+                <TextBox
+                    x:Name="FromTB"
+                    Width="40"
+                    Text="0" />
+                <Label Content="to" />
+            </StackPanel>
+            <!--  X до  -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBox
+                    x:Name="ToTB"
+                    Width="40"
+                    Text="10" />
+            </StackPanel>
+            <!--  Интервалы  -->
+            <Label Grid.Row="1" Content="# intervals" />
+            <TextBox
+                x:Name="IntervalTB"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="40"
+                HorizontalAlignment="Left"
+                Text="10" />
+            <!--  Кнопка  -->
+            <Button
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="10"
+                Padding="10,0"
+                HorizontalAlignment="Center"
+                Click="OnIntegrate"
+                Content="Integrate" />
+        </Grid>
+
+        <!--  Интегрирование  -->
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Content="Est.Area:" />
+            <Label Grid.Row="1" Content="True Area:" />
+            <TextBox
+                x:Name="EstAreaTB"
+                Grid.Column="1"
+                IsEnabled="False" />
+            <TextBox
+                x:Name="TrueAreaTB"
+                Grid.Row="1"
+                Grid.Column="1"
+                IsEnabled="False" />
+            <Label
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Content="%Err:" />
+            <TextBox
+                x:Name="ErrTb"
+                Grid.RowSpan="2"
+                Grid.Column="3"
+                VerticalAlignment="Center"
+                IsEnabled="False" />
+        </Grid>
+    </Grid>
+</Window>
