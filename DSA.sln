@@ -5,6 +5,10 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RectangularRule", "RectangularRule\RectangularRule.csproj", "{805D1D6D-9C22-43FC-9D9D-5BE0742CEFA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkedLists", "LinkedLists\LinkedLists.csproj", "{DBBB0E1C-D95F-422F-BE9B-0BE56BCF955F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4C6A4BCF-E014-4F12-ADDE-233133D33398}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{805D1D6D-9C22-43FC-9D9D-5BE0742CEFA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{805D1D6D-9C22-43FC-9D9D-5BE0742CEFA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{805D1D6D-9C22-43FC-9D9D-5BE0742CEFA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBBB0E1C-D95F-422F-BE9B-0BE56BCF955F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBBB0E1C-D95F-422F-BE9B-0BE56BCF955F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBBB0E1C-D95F-422F-BE9B-0BE56BCF955F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBBB0E1C-D95F-422F-BE9B-0BE56BCF955F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C6A4BCF-E014-4F12-ADDE-233133D33398}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6A4BCF-E014-4F12-ADDE-233133D33398}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6A4BCF-E014-4F12-ADDE-233133D33398}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6A4BCF-E014-4F12-ADDE-233133D33398}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
