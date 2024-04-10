@@ -6,17 +6,19 @@ namespace Tests
         [TestMethod]
         public void AddWhenNotEmpty_Success()
         {
+            int maxNumber = 10;
             var linkedList = new LinkedLists.LinkedList<int>();
-            linkedList.Add(1);
-            linkedList.Add(2);
-            linkedList.Add(3);
-            linkedList.Add(4);
+            for (int i = 0; i < maxNumber; i++)
+                linkedList.AddLast(i);
+
             int count = 0;
-            foreach(var number in linkedList)
+            foreach (var node in linkedList)
             {
+                Assert.AreEqual(node, count);
                 count++;
             }
-            Assert.AreEqual(count, 4);
+            Assert.AreEqual(count, maxNumber);
+            Assert.AreEqual(count, linkedList.Count());
         }
     }
 }

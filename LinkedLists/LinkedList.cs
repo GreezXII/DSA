@@ -10,13 +10,12 @@ namespace LinkedLists
         public LinkedListNode<T>? First => _top_sentinel.Next;
         public LinkedListNode<T>? Last => _last_sentinel.Previous;
 
-        public void Add(T value)
+        public void AddLast(T value)
         {
             var newNode = new LinkedListNode<T>(value);
             if (IsEmpty)
             {
-                _top_sentinel.Next = newNode;
-                _last_sentinel.Previous = newNode;
+                AddNodeForEmptyList(newNode);
             }
             else
             {
@@ -27,9 +26,31 @@ namespace LinkedLists
             }    
         }
 
+        public void AddFirst(T value)
+        {
+            var newNode = new LinkedListNode<T>(value);
+            if (IsEmpty)
+            {
+                AddNodeForEmptyList(newNode);
+            }
+            else
+            {
+                var firstNode = _last_sentinel.Previous;
+                firstNode!.Previous = newNode;
+                newNode.Next = firstNode;
+                _top_sentinel.Next = newNode;
+            }
+        }
+
+        private void AddNodeForEmptyList(LinkedListNode<T> node)
+        {
+            _top_sentinel.Next = node;
+            _last_sentinel.Previous = node;
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
-            return new LinkedListEnumerator<T>(First!);
+            return new LinkedListEnumerator<T>(_top_sentinel);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -58,15 +79,7 @@ namespace LinkedLists
     {
         private LinkedListNode<T> _currentNode;
 
-        public T Current
-        {
-            get
-            {
-                var value = _currentNode.Value;
-                _currentNode = _currentNode.Next!;
-                return value!;
-            }
-        }
+        public T Current => _currentNode.Value!;
 
         object IEnumerator.Current => Current!;
 
@@ -75,7 +88,14 @@ namespace LinkedLists
             _currentNode = currentNode;
         }
 
-        public bool MoveNext() => _currentNode is not null;
+        public bool MoveNext()
+        {
+            if (_currentNode.Next is null)
+                return false;
+
+            _currentNode = _currentNode.Next!;
+            return true;
+        }
 
         public void Reset()
         {
