@@ -4,11 +4,11 @@ namespace LinkedLists
 {
     public class LinkedList<T> : IEnumerable<T>
     {
-        private LinkedListNode<T> _top_sentinel = new();
-        private LinkedListNode<T> _last_sentinel = new();
+        private readonly LinkedListNode<T> _topSentinel = new();
+        private readonly LinkedListNode<T> _lastSentinel = new();
 
-        public LinkedListNode<T>? First => _top_sentinel.Next;
-        public LinkedListNode<T>? Last => _last_sentinel.Previous;
+        public LinkedListNode<T>? First => _topSentinel.Next;
+        public LinkedListNode<T>? Last => _lastSentinel.Previous;
 
         public void AddLast(T value)
         {
@@ -19,10 +19,10 @@ namespace LinkedLists
             }
             else
             {
-                var lastNode = _last_sentinel.Previous;
+                var lastNode = _lastSentinel.Previous;
                 lastNode!.Next = newNode;
                 newNode.Previous = lastNode;
-                _last_sentinel.Previous = newNode;
+                _lastSentinel.Previous = newNode;
             }    
         }
 
@@ -35,22 +35,22 @@ namespace LinkedLists
             }
             else
             {
-                var firstNode = _last_sentinel.Previous;
+                var firstNode = _topSentinel.Next;
                 firstNode!.Previous = newNode;
                 newNode.Next = firstNode;
-                _top_sentinel.Next = newNode;
+                _topSentinel.Next = newNode;
             }
         }
 
         private void AddNodeForEmptyList(LinkedListNode<T> node)
         {
-            _top_sentinel.Next = node;
-            _last_sentinel.Previous = node;
+            _topSentinel.Next = node;
+            _lastSentinel.Previous = node;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new LinkedListEnumerator<T>(_top_sentinel);
+            return new LinkedListEnumerator<T>(_topSentinel);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -58,7 +58,7 @@ namespace LinkedLists
             return GetEnumerator();
         }
 
-        public bool IsEmpty { get => _top_sentinel.Next is null && _last_sentinel.Previous is null; }
+        public bool IsEmpty => _topSentinel.Next is null && _lastSentinel.Previous is null;
     }
 
     public class LinkedListNode<T>
@@ -75,7 +75,7 @@ namespace LinkedLists
         }
     }
 
-    class LinkedListEnumerator<T> : IEnumerator<T>
+    internal class LinkedListEnumerator<T> : IEnumerator<T>
     {
         private LinkedListNode<T> _currentNode;
 
