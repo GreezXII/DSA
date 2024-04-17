@@ -5,10 +5,10 @@ namespace LinkedLists
     public class LinkedList<T> : IEnumerable<T>
     {
         private readonly LinkedListNode<T> _topSentinel = new();
-        private readonly LinkedListNode<T> _lastSentinel = new();
+        private readonly LinkedListNode<T> _bottomSentinel = new();
 
         public LinkedListNode<T>? First => _topSentinel.Next;
-        public LinkedListNode<T>? Last => _lastSentinel.Previous;
+        public LinkedListNode<T>? Last => _bottomSentinel.Previous;
 
         public void AddLast(T value)
         {
@@ -19,10 +19,7 @@ namespace LinkedLists
             }
             else
             {
-                var lastNode = _lastSentinel.Previous;
-                lastNode!.Next = newNode;
-                newNode.Previous = lastNode;
-                _lastSentinel.Previous = newNode;
+                PlaceAsLast(newNode);
             }    
         }
 
@@ -30,22 +27,103 @@ namespace LinkedLists
         {
             var newNode = new LinkedListNode<T>(value);
             if (IsEmpty)
-            {
                 AddNodeForEmptyList(newNode);
-            }
             else
+                PlaceAsFirst(newNode);
+        }
+
+        public LinkedListNode<T>? FindNodeByValue(T value)
+        {
+            var node = Find(value);
+            // Rearrange(node);
+            return node;
+        }
+        
+        private LinkedListNode<T>? Find(T value)
+        {
+            var currentNode = _topSentinel.Next;
+            while (currentNode != _bottomSentinel)
             {
-                var firstNode = _topSentinel.Next;
-                firstNode!.Previous = newNode;
-                newNode.Next = firstNode;
-                _topSentinel.Next = newNode;
+                if (currentNode is null || currentNode.Value is null)
+                    continue;
+                
+                if (currentNode.Value.Equals(value))
+                    return currentNode;
+            }
+            return null;
+        }
+
+        private void Rearrange(LinkedListNode<T> node, RearrangeKind rearrangeKind)
+        {
+            switch (rearrangeKind)
+            {
+                case RearrangeKind.MoveToFront:
+                    MoveToFront(node);
+                    break;
+                case RearrangeKind.Swap:
+                    SwapLeft(node);
+                    break;
+                case RearrangeKind.Count:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(rearrangeKind), rearrangeKind, "Unknown rearrange kind.");
             }
         }
 
+        public void MoveToFront(LinkedListNode<T> node)
+        {
+            RemoveNode(node);
+            PlaceAsFirst(node);
+        }
+
+        public void SwapLeft(LinkedListNode<T> node)
+        {
+            var swapNode = node.Previous;
+            if (swapNode == _topSentinel)
+                return;
+
+            var leftNode = swapNode!.Previous;
+            var rightNode = node.Next;
+            node.Next = swapNode;
+            node.Previous = leftNode;
+            swapNode.Next = rightNode;
+            swapNode.Previous = node;
+            leftNode!.Next = node;
+            rightNode!.Previous = swapNode;
+        }
+
+        private void PlaceAsFirst(LinkedListNode<T> node)
+        {
+            var firstNode = _topSentinel.Next;
+            firstNode!.Previous = node;
+            node.Next = firstNode;
+            node.Previous = _topSentinel;
+            _topSentinel.Next = node;
+        }
+        
+        private void PlaceAsLast(LinkedListNode<T> newNode)
+        {
+            var lastNode = _bottomSentinel.Previous;
+            lastNode!.Next = newNode;
+            newNode.Previous = lastNode;
+            newNode.Next = _bottomSentinel;
+            _bottomSentinel.Previous = newNode;
+        }
+
+        private void RemoveNode(LinkedListNode<T> node)
+        {
+            var previous = node.Previous;
+            var next = node.Next;
+            previous!.Next = next;
+            next!.Previous = previous;
+        }
+        
         private void AddNodeForEmptyList(LinkedListNode<T> node)
         {
             _topSentinel.Next = node;
-            _lastSentinel.Previous = node;
+            _bottomSentinel.Previous = node;
+            node.Next = _bottomSentinel;
+            node.Previous = _topSentinel;
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -58,7 +136,7 @@ namespace LinkedLists
             return GetEnumerator();
         }
 
-        public bool IsEmpty => _topSentinel.Next is null && _lastSentinel.Previous is null;
+        public bool IsEmpty => _topSentinel.Next is null && _bottomSentinel.Previous is null;
     }
 
     public class LinkedListNode<T>
@@ -73,35 +151,5 @@ namespace LinkedLists
         {
             Value = value;
         }
-    }
-
-    internal class LinkedListEnumerator<T> : IEnumerator<T>
-    {
-        private LinkedListNode<T> _currentNode;
-
-        public T Current => _currentNode.Value!;
-
-        object IEnumerator.Current => Current!;
-
-        public LinkedListEnumerator(LinkedListNode<T> currentNode)
-        {
-            _currentNode = currentNode;
-        }
-
-        public bool MoveNext()
-        {
-            if (_currentNode.Next is null)
-                return false;
-
-            _currentNode = _currentNode.Next!;
-            return true;
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose() { }
     }
 }
