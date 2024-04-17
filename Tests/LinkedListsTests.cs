@@ -71,5 +71,35 @@ namespace Tests
             foreach (int node in linkedList)
                 Assert.AreEqual(node, rightOrder[index++]);
         }
+
+        [TestMethod]
+        public void Swap_Success()
+        {
+            var linkedList = new LinkedLists.LinkedList<int>();
+            linkedList.AddLast(1);
+            linkedList.AddLast(2);
+            linkedList.AddLast(3);
+            
+            var nodeToSwap = linkedList.First;
+            linkedList.SwapLeft(nodeToSwap!);
+            var rightOrder = new[] { 1, 2, 3 };
+            int index = 0;
+            foreach (int node in linkedList)
+                Assert.AreEqual(node, rightOrder[index++]);
+            
+            nodeToSwap = linkedList.First!.Next;
+            linkedList.SwapLeft(nodeToSwap!);
+            rightOrder = new[] { 2, 1, 3 };
+            index = 0;
+            foreach (int node in linkedList)
+                Assert.AreEqual(node, rightOrder[index++]);
+            
+            nodeToSwap = linkedList.First!.Next!.Next;
+            linkedList.SwapLeft(nodeToSwap!);
+            rightOrder = new[] { 2, 3, 1 };
+            index = 0;
+            foreach (int node in linkedList)
+                Assert.AreEqual(node, rightOrder[index++]);
+        }
     }
 }
