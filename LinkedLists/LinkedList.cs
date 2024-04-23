@@ -32,28 +32,31 @@ namespace LinkedLists
                 PlaceAsFirst(newNode);
         }
 
-        public LinkedListNode<T>? FindNodeByValue(T value)
+        public LinkedListNode<T>? FindNodeByValue(T value, RearrangeKind? rearrangeKind)
         {
             var node = Find(value);
-            // Rearrange(node);
+            if (node is not null && rearrangeKind is not null)
+                Rearrange(node, rearrangeKind);
             return node;
         }
         
         private LinkedListNode<T>? Find(T value)
         {
-            var currentNode = _topSentinel.Next;
+            var currentNode = _topSentinel;
+            int i = 0;
             while (currentNode != _bottomSentinel)
             {
                 if (currentNode is null || currentNode.Value is null)
                     continue;
                 
-                if (currentNode.Value.Equals(value))
+                currentNode = currentNode.Next;
+                if (EqualityComparer<T>.Default.Equals(currentNode.Value, value))
                     return currentNode;
             }
             return null;
         }
 
-        private void Rearrange(LinkedListNode<T> node, RearrangeKind rearrangeKind)
+        private void Rearrange(LinkedListNode<T> node, RearrangeKind? rearrangeKind)
         {
             switch (rearrangeKind)
             {
@@ -66,7 +69,7 @@ namespace LinkedLists
                 case RearrangeKind.Count:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(rearrangeKind), rearrangeKind, "Unknown rearrange kind.");
+                    return;
             }
         }
 
@@ -137,6 +140,12 @@ namespace LinkedLists
         }
 
         public bool IsEmpty => _topSentinel.Next is null && _bottomSentinel.Previous is null;
+
+        public void AddRange(IEnumerable<T> nodeValues)
+        {
+            foreach (var value in nodeValues)
+                AddLast(value);
+        }
     }
 
     public class LinkedListNode<T>
