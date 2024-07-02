@@ -56,5 +56,7 @@ public class LinkedListsSearchBenchmark
     public void Swap()
     {
         Search(RearrangeKind.Swap);
+
+        var cts = new CancellationTokenSource();
     }
 }
