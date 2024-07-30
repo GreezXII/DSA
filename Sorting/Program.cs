@@ -1,4 +1,6 @@
-﻿var numsInput = new int[] { 5, 2, 3, 6, 4, 1, 8, 0, 7, 9};
+﻿using System.Diagnostics.CodeAnalysis;
+
+var numsInput = new int[] { 5, 2, 3, 6, 4, 1, 8, 0, 7, 9};
 var charsInput = new char[] { 'a', 'c', 'b', 'e', 'f', 'd', 'g' };
 
 var numResult = InsertionSort(Copy(numsInput));
@@ -20,17 +22,14 @@ Console.Read();
 
 IList<T> InsertionSort<T>(IList<T> data, IComparer<T>? comparer = null)
 {
-    if (comparer is null)
-        comparer = Comparer<T>.Default;
+    comparer ??= Comparer<T>.Default;
     for (int i = 1; i < data.Count; i++)
     {
         for (int j = 0; j < i; j++)
         {
             if (comparer.Compare(data[j], data[i]) > 0)
             {
-                var temp = data[i];
-                data[i] = data[j];
-                data[j] = temp;
+                (data[i], data[j]) = (data[j], data[i]);
             }
         }
     }
@@ -39,8 +38,7 @@ IList<T> InsertionSort<T>(IList<T> data, IComparer<T>? comparer = null)
 
 IList<T> SelectionSort<T>(IList<T> data, IComparer<T>? comparer = null)
 {
-    if (comparer is null)
-        comparer = Comparer<T>.Default;
+    comparer ??= Comparer<T>.Default;
 
     for (int i = 0; i < data.Count; i++)
     {
@@ -52,9 +50,7 @@ IList<T> SelectionSort<T>(IList<T> data, IComparer<T>? comparer = null)
                 minIndex = j;
             }
         }
-        var temp = data[i];
-        data[i] = data[minIndex];
-        data[minIndex] = temp;
+        (data[i], data[minIndex]) = (data[minIndex], data[i]);
     }
 
     return data;
@@ -98,4 +94,15 @@ IList<T> Copy<T>(IList<T> input)
     T[] output = Enumerable.Repeat<T>(default(T)!, input.Count).ToArray();
     input.CopyTo(output, 0);
     return output;
+}
+
+class Query
+{
+    [StringSyntax("graphql")] public string Q { get; set; } = """
+                type Project {
+          name: String
+          tagline: String
+          contributors: [User]
+        }
+        """;
 }
