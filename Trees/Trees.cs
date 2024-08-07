@@ -97,42 +97,43 @@ class Node<T>
 class Heap<T>()
 {
     private T[] _items;
-    private int _count;
-
-    public T? PopTopItem(Comparer<T> comparer = null)
+    public IReadOnlyCollection<T> Items => _items;
+    
+    public void HeapSort(Comparer<T>? comparer = null)
     {
         if (_items.Length == 0)
-            return default;
+            return;
 
         comparer ??= Comparer<T>.Default;
-        
-        var topItem = _items[0];
-        _items[0] = _items[_count - 1];
-        int index = 0;
-        while (true)
+
+        int end = _items.Length - 1;
+        while (end > 0)
         {
-            int leftIndex = (2 * index) + 1;
-            int rightIndex = (2 * index) + 2;
+            (_items[0], _items[end]) = (_items[end], _items[0]);
+            int index = 0;
+            while (true)
+            {
+                int leftIndex = (2 * index) + 1;
+                int rightIndex = (2 * index) + 2;
 
-            if (leftIndex >= _items.Length)
-                leftIndex = index;
-            if (rightIndex >= _items.Length)
-                rightIndex = index;
+                if (leftIndex >= end)
+                    leftIndex = index;
+                if (rightIndex >= end)
+                    rightIndex = index;
 
-            var indexValue = _items[index];
-            var leftValue = _items[leftIndex];
-            var rightValue = _items[rightIndex];
-            if (comparer.Compare(indexValue, leftValue) >= 0 && comparer.Compare(indexValue, rightValue) >= 0)
-                break;
+                var indexValue = _items[index];
+                var leftValue = _items[leftIndex];
+                var rightValue = _items[rightIndex];
+                if (comparer.Compare(indexValue, leftValue) >= 0 && comparer.Compare(indexValue, rightValue) >= 0)
+                    break;
 
-            var swapIndex = comparer.Compare(leftValue, rightValue) > 0 ? leftIndex : rightIndex;
+                var swapIndex = comparer.Compare(leftValue, rightValue) > 0 ? leftIndex : rightIndex;
 
-            (_items[index], _items[swapIndex]) = (_items[swapIndex], _items[index]);
-            index = swapIndex;
+                (_items[index], _items[swapIndex]) = (_items[swapIndex], _items[index]);
+                index = swapIndex;
+            }
+            end--;
         }
-
-        _count--;
-        return topItem;
     }
     
     public void MakeHeap(T[] input, Comparer<T>? comparer = null)
@@ -153,6 +154,5 @@ class Heap<T>()
             }
         }
         _items = input;
-        _count = input.Length;
     }
 }
