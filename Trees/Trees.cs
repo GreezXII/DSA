@@ -93,3 +93,66 @@ class Node<T>
     public Node<T>? Left { get; set; }
     public Node<T>? Right { get; set; }
 }
+
+class Heap<T>()
+{
+    private T[] _items;
+    private int _count;
+
+    public T? PopTopItem(Comparer<T> comparer = null)
+    {
+        if (_items.Length == 0)
+            return default;
+
+        comparer ??= Comparer<T>.Default;
+        
+        var topItem = _items[0];
+        _items[0] = _items[_count - 1];
+        int index = 0;
+        while (true)
+        {
+            int leftIndex = (2 * index) + 1;
+            int rightIndex = (2 * index) + 2;
+
+            if (leftIndex >= _items.Length)
+                leftIndex = index;
+            if (rightIndex >= _items.Length)
+                rightIndex = index;
+
+            var indexValue = _items[index];
+            var leftValue = _items[leftIndex];
+            var rightValue = _items[rightIndex];
+            if (comparer.Compare(indexValue, leftValue) >= 0 && comparer.Compare(indexValue, rightValue) >= 0)
+                break;
+
+            var swapIndex = comparer.Compare(leftValue, rightValue) > 0 ? leftIndex : rightIndex;
+
+            (_items[index], _items[swapIndex]) = (_items[swapIndex], _items[index]);
+            index = swapIndex;
+        }
+
+        _count--;
+        return topItem;
+    }
+    
+    public void MakeHeap(T[] input, Comparer<T>? comparer = null)
+    {
+        comparer ??= Comparer<T>.Default;
+        for (int i = 0; i < input.Length; i++)
+        {
+            int index = i;
+            while (index != 0)
+            {
+                int parentIndex = (index - 1) / 2;
+                var compare = comparer.Compare(input[index], input[parentIndex]); 
+                if (compare < 1)
+                    break;
+
+                (input[index], input[parentIndex]) = (input[parentIndex], input[index]);
+                index = parentIndex;
+            }
+        }
+        _items = input;
+        _count = input.Length;
+    }
+}
