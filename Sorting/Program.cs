@@ -95,14 +95,3 @@ IList<T> Copy<T>(IList<T> input)
     input.CopyTo(output, 0);
     return output;
 }
-
-class Query
-{
-    [StringSyntax("graphql")] public string Q { get; set; } = """
-                type Project {
-          name: String
-          tagline: String
-          contributors: [User]
-        }
-        """;
-}

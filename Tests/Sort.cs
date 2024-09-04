@@ -1,0 +1,56 @@
+﻿using Sorting;
+
+namespace Tests;
+
+[TestClass]
+public class Sort
+{
+    private static TestContext _testContext;
+    
+    [ClassInitialize]
+    public static void SetupTests(TestContext testContext)
+    {
+        _testContext = testContext;
+    }
+    
+    [TestMethod]
+    public void Quicksort_Success()
+    {
+        var q = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        {
+            var expected = values.OrderBy(x => x).ToArray();
+            QuicksortAlgorithm.Quicksort(values, 0, values.Length - 1);
+            for (int i = 0; i < values.Length - 1; i++)
+                Assert.AreEqual(expected[i], values[i]);
+        }
+    }
+    
+    static IEnumerable<int[]> GeneratePermutations(int[] arr, int start, int end)
+    {
+        if (start == end)
+        {
+            // Print the permutation
+            _testContext.WriteLine(string.Join(", ", arr));
+            yield return arr;
+        }
+        else
+        {
+            for (int i = start; i <= end; i++)
+            {
+                Swap(ref arr[start], ref arr[i]);
+                GeneratePermutations(arr, start + 1, end);
+                yield return arr;
+                Swap(ref arr[start], ref arr[i]); // Backtrack
+            }
+        }
+    }
+
+    static void Swap(ref int a, ref int b)
+    {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+}
