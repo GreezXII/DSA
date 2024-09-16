@@ -1,7 +1,4 @@
-﻿using System.Buffers;
-using System.Runtime.InteropServices.Marshalling;
-
-namespace Sorting;
+﻿namespace Sorting;
 
 public class QuicksortAlgorithm
 {

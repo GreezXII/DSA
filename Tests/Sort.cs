@@ -26,6 +26,21 @@ public class Sort
                 Assert.AreEqual(expected[i], values[i]);
         }
     }
+
+    [TestMethod]
+    public void Mergesort_Success()
+    {
+        var q = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        {
+            var expected = values.OrderBy(x => x).ToArray();
+            var scratch = new int[expected.Length];
+            Array.Copy(expected, 0, scratch, 0, expected.Length);
+            MergesortAlgorithm.Mergesort(values, scratch, 0, values.Length - 1);
+            for (int i = 0; i < values.Length - 1; i++)
+                Assert.AreEqual(expected[i], values[i]);
+        }
+    }
     
     static IEnumerable<int[]> GeneratePermutations(int[] arr, int start, int end)
     {
