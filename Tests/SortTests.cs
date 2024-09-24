@@ -3,7 +3,7 @@
 namespace Tests;
 
 [TestClass]
-public class Sort
+public class SortTests
 {
     private static TestContext _testContext;
     
@@ -50,6 +50,19 @@ public class Sort
         {
             var expected = values.OrderBy(x => x).ToArray();
             Countingsort.Sort(values);
+            for (var i = 0; i < values.Length - 1; i++)
+                Assert.AreEqual(expected[i], values[i]);
+        }
+    }
+
+    [TestMethod]
+    public void Pigeonholesort_Success()
+    {
+        var q = new int[] { -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        {
+            var expected = values.OrderBy(x => x).ToArray();
+            Pigeonholesort.Sort(values);
             for (var i = 0; i < values.Length - 1; i++)
                 Assert.AreEqual(expected[i], values[i]);
         }
