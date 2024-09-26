@@ -1,15 +1,15 @@
 ﻿namespace Sorting;
 
-public class MergesortAlgorithm
+public class MergeSort
 {
-    public static void Mergesort(int[] data, int[] scratch, int start, int end)
+    public static void Sort(int[] data, int[] scratch, int start, int end)
     {
         if (start == end)
             return;
 
         var middle = (start + end) / 2;
-        Mergesort(data, scratch, start, middle);
-        Mergesort(data, scratch, middle + 1, end);
+        Sort(data, scratch, start, middle);
+        Sort(data, scratch, middle + 1, end);
         
         int left = start;
         int right = middle + 1;

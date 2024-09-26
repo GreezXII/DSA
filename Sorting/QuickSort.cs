@@ -1,8 +1,8 @@
 ﻿namespace Sorting;
 
-public class QuicksortAlgorithm
+public class QuickSort
 {
-    public static void Quicksort(int[] values, int start, int end)
+    public static void Sort(int[] values, int start, int end)
     {
         if (start >= end)
             return;
@@ -45,8 +45,8 @@ public class QuicksortAlgorithm
             values[right] = values[left];
         }
         
-        Quicksort(values, start, right - 1);
-        Quicksort(values, right + 1, end);
+        Sort(values, start, right - 1);
+        Sort(values, right + 1, end);
     }
 
     private static void Swap(int[] values, int a, int b) => (values[a], values[b]) = (values[b], values[a]);

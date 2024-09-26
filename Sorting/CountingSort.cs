@@ -1,6 +1,6 @@
 ﻿namespace Sorting;
 
-class Countingsort
+class CountingSort
 {
     public static void Sort(int[] array)
     {

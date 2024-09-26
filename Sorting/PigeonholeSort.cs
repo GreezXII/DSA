@@ -1,6 +1,6 @@
 ﻿namespace Sorting;
 
-public class Pigeonholesort
+public class PigeonholeSort
 {
     public static void Sort(int[] array)
     {

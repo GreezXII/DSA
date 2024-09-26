@@ -5,88 +5,134 @@ namespace Tests;
 [TestClass]
 public class SortTests
 {
-    private static TestContext _testContext;
-    
+    private static TestContext? _testContext;
+    private static int[] _testIntegers = null!;
+
     [ClassInitialize]
     public static void SetupTests(TestContext testContext)
     {
         _testContext = testContext;
+        _testIntegers = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    }
+
+    [TestMethod]
+    public void InsertionSort_Success()
+    {
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
+        {
+            var expected = values.OrderBy(x => x).ToArray();
+            InsertionSort.Sort(values);
+            for (var i = 0; i < values.Length - 1; i++)
+                Assert.AreEqual(expected[i], values[i]);
+        }
     }
     
     [TestMethod]
-    public void Quicksort_Success()
+    public void SelectionSort_Success()
     {
-        var q = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
         {
             var expected = values.OrderBy(x => x).ToArray();
-            QuicksortAlgorithm.Quicksort(values, 0, values.Length - 1);
+            SelectionSort.Sort(values);
+            for (var i = 0; i < values.Length - 1; i++)
+                Assert.AreEqual(expected[i], values[i]);
+        }
+    }
+    
+    [TestMethod]
+    public void BubbleSort_Success()
+    {
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
+        {
+            var expected = values.OrderBy(x => x).ToArray();
+            BubbleSort.Sort(values);
+            for (var i = 0; i < values.Length - 1; i++)
+                Assert.AreEqual(expected[i], values[i]);
+        }
+    }
+    
+    [TestMethod]
+    public void QuickSort_Success()
+    {
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
+        {
+            var expected = values.OrderBy(x => x).ToArray();
+            QuickSort.Sort(values, 0, values.Length - 1);
             for (int i = 0; i < values.Length - 1; i++)
                 Assert.AreEqual(expected[i], values[i]);
         }
     }
 
     [TestMethod]
-    public void Mergesort_Success()
+    public void MergeSort_Success()
     {
-        var q = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
         {
             var expected = values.OrderBy(x => x).ToArray();
             var scratch = new int[expected.Length];
             Array.Copy(expected, 0, scratch, 0, expected.Length);
-            MergesortAlgorithm.Mergesort(values, scratch, 0, values.Length - 1);
+            MergeSort.Sort(values, scratch, 0, values.Length - 1);
             for (int i = 0; i < values.Length - 1; i++)
                 Assert.AreEqual(expected[i], values[i]);
         }
     }
 
     [TestMethod]
-    public void Countingsort_Success()
+    public void CountingSort_Success()
     {
-        var q = new int[] { -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
         {
             var expected = values.OrderBy(x => x).ToArray();
-            Countingsort.Sort(values);
+            CountingSort.Sort(values);
             for (var i = 0; i < values.Length - 1; i++)
                 Assert.AreEqual(expected[i], values[i]);
         }
     }
 
     [TestMethod]
-    public void Pigeonholesort_Success()
+    public void PigeonholeSort_Success()
     {
-        var q = new int[] { -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
         {
             var expected = values.OrderBy(x => x).ToArray();
-            Pigeonholesort.Sort(values);
+            PigeonholeSort.Sort(values);
             for (var i = 0; i < values.Length - 1; i++)
                 Assert.AreEqual(expected[i], values[i]);
         }
     }
 
     [TestMethod]
-    public void Bucketsort_Success()
+    public void BucketSort_Success()
     {
-        var q = new int[] { -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        foreach (var values in GeneratePermutations(q, 0, q.Length - 1))
+        var testData = new int[_testIntegers.Length];
+        Array.Copy(_testIntegers, testData, testData.Length);
+        foreach (var values in GeneratePermutations(testData, 0, testData.Length - 1))
         {
             var expected = values.OrderBy(x => x).ToArray();
-            Bucketsort.Sort(values, 5);
+            BucketSort.Sort(values, 5);
             for (var i = 0; i < values.Length - 1; i++)
                 Assert.AreEqual(expected[i], values[i]);
         }
     }
-    
-    static IEnumerable<int[]> GeneratePermutations(int[] arr, int start, int end)
+
+    private static IEnumerable<int[]> GeneratePermutations(int[] arr, int start, int end)
     {
         if (start == end)
         {
-            // Print the permutation
-            _testContext.WriteLine(string.Join(", ", arr));
             yield return arr;
         }
         else
@@ -94,17 +140,12 @@ public class SortTests
             for (int i = start; i <= end; i++)
             {
                 Swap(ref arr[start], ref arr[i]);
-                GeneratePermutations(arr, start + 1, end);
+                _ = GeneratePermutations(arr, start + 1, end);
                 yield return arr;
-                Swap(ref arr[start], ref arr[i]); // Backtrack
+                Swap(ref arr[start], ref arr[i]); 
             }
         }
     }
 
-    static void Swap(ref int a, ref int b)
-    {
-        int temp = a;
-        a = b;
-        b = temp;
-    }
+    private static void Swap(ref int a, ref int b) => (a, b) = (b, a);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Sorting;
 
-public class Bucketsort
+public class BucketSort
 {
     public static void Sort(int[] array, int bucketsCounter)
     {

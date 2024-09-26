@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkedLists", "LinkedLists\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{4C6A4BCF-E014-4F12-ADDE-233133D33398}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{7DF287AF-74F4-4541-9AAA-ADDE4AB4C572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkedListsSearchBenchmark", "LinkedListsSearchBenchmark\LinkedListsSearchBenchmark.csproj", "{7DF287AF-74F4-4541-9AAA-ADDE4AB4C572}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sorting", "Sorting\Sorting.csproj", "{DEB607D0-1365-40A9-8078-B8A5506A9B8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trees", "Trees\Trees.csproj", "{DB325967-5E5C-43A5-9857-3D1808D6CD8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{D8247B61-534D-4174-9F20-93EC504A8F29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,5 +53,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12644C1D-CEAE-4019-9564-4644FD6E342E}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7DF287AF-74F4-4541-9AAA-ADDE4AB4C572} = {D8247B61-534D-4174-9F20-93EC504A8F29}
 	EndGlobalSection
 EndGlobal
