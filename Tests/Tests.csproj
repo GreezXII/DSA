@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LinkedLists\LinkedLists.csproj" />
+    <ProjectReference Include="..\Other\Other.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
     <ProjectReference Include="..\Sorting\Sorting.csproj" />
     <ProjectReference Include="..\Trees\Trees.csproj" />
