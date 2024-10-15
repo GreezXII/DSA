@@ -1,24 +1,23 @@
-﻿using System.Net.Http.Headers;
+﻿namespace HashTables;
 
-namespace HashTables;
-
-public class ChainingHashTable<TKey, TValue>
+public class OrderedChainingHashTable<TKey, TValue>
 {
-    public ChainingHashTable(int bucketsCount, int length)
+    public OrderedChainingHashTable(int bucketsCount, int length)
     {
         _bucketsCount = bucketsCount;
         _length = length;
         _buckets = new Entry<TKey, TValue>?[_bucketsCount];
     }
-
+    
     private int _bucketsCount;
     private int _length;
     private readonly Entry<TKey, TValue>?[] _buckets;
 
     public void Add(TKey key, TValue value)
     {
-        if (key is null)
+        if (key is null) 
             throw new ArgumentNullException(nameof(key));
+
         var hash = GetHash(key);
         var entry = _buckets[hash];
         if (entry is null)
@@ -28,19 +27,38 @@ public class ChainingHashTable<TKey, TValue>
             return;
         }
 
-        var comparer = EqualityComparer<TKey>.Default;
+        Entry<TKey, TValue>? previousEntry = null;
+        var comparer = Comparer<TKey>.Default;
         while (entry is not null)
         {
-            if (comparer.Equals(entry.Key, key))
+            var compareResult = comparer.Compare(entry.Key, key); 
+            if (compareResult == 0)
                 throw new ArgumentException("Key already exists.");
             
-            entry = entry.Next;
+            if (compareResult < 0)
+            {
+                previousEntry = entry;
+                entry = entry.Next;
+            }
+            else
+            {
+                break;
+            }
         }
-        
-        var newEntry = new Entry<TKey, TValue>(key, value, _buckets[hash]);
-        _buckets[hash] = newEntry;
-    }
 
+        Entry<TKey, TValue> newEntry;
+        if (previousEntry is not null)
+        {
+            newEntry = new Entry<TKey, TValue>(key, value, previousEntry.Next);
+            previousEntry.Next = newEntry;
+        }
+        else
+        {
+            newEntry = new Entry<TKey, TValue>(key, value, _buckets[hash]);
+            _buckets[hash] = newEntry;
+        }
+    }
+    
     private Entry<TKey, TValue> GetEntry(TKey key)
     {
         var hash = GetHash(key);
@@ -75,7 +93,7 @@ public class ChainingHashTable<TKey, TValue>
             }
         }
     }
-
+    
     private int GetHash(TKey key)
     {
         if (key is null)

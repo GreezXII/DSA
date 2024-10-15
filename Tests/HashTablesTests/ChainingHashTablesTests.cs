@@ -4,16 +4,8 @@ using HashTables;
 namespace Tests;
 
 [TestClass]
-public class HashTablesTests
+public class ChainingHashTablesTests
 {
-    [TestMethod]
-    public void DictionaryTest_Success()
-    {
-        var people = new Dictionary<Person, int>();
-        people.Add(new Person("Fred"), 42);
-        var age = people[new Person("Fred")];
-    }
-
     [TestMethod]
     public void ChainingHashTable_Add_Success()
     {
@@ -62,7 +54,7 @@ public class HashTablesTests
     }
 
     [TestMethod]
-    public void Update_Success()
+    public void ChainingHashTable_Update_Success()
     {
         var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
         chainingHashTable.Add("Fred", 41);
@@ -72,7 +64,7 @@ public class HashTablesTests
     }
     
     [TestMethod]
-    public void AddOrUpdate_Success()
+    public void ChainingHashTable_AddOrUpdate_Success()
     {
         var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
         chainingHashTable["Fred"] = 41;
@@ -80,21 +72,4 @@ public class HashTablesTests
         chainingHashTable["Fred"] = 11;
         Assert.AreEqual(11, chainingHashTable["Fred"]);
     }
-}
-
-class  SameHash
-{
-    public SameHash(string name)
-    {
-        Name = name;
-    }
-
-    public string Name { get; private set; }
-    
-    public override int GetHashCode()
-    {
-        return 0;
-    }
-
-    public override bool Equals(object? obj) => obj is SameHash hash && Name == hash.Name;
 }
