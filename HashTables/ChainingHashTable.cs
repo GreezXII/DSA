@@ -42,23 +42,38 @@ public class ChainingHashTable<TKey, TValue>
         _buckets[hash] = newEntry;
     }
 
+    private Entry<TKey, TValue> GetEntry(TKey key)
+    {
+        var hash = GetHash(key);
+        var entry = _buckets[hash];
+        if (entry is null)
+            throw new KeyNotFoundException();
+            
+        var comparer = EqualityComparer<TKey>.Default;
+        while (entry is not null)
+        {
+            if (comparer.Equals(entry.Key, key))
+                return entry;
+            entry = entry.Next;
+        }
+        throw new KeyNotFoundException();
+    }
+    
     public TValue? this[TKey key]
     {
-        get
+        get => GetEntry(key).Value;
+        set
         {
-            var hash = GetHash(key);
-            var entry = _buckets[hash];
-            if (entry is null)
-                return default;
-            
-            var comparer = EqualityComparer<TKey>.Default;
-            while (entry is not null)
+            if (value is null)
+                throw new ArgumentNullException(nameof(value));
+            try
             {
-                if (comparer.Equals(entry.Key, key))
-                    return entry.Value;
-                entry = entry.Next;
+                GetEntry(key).Value = value;
             }
-            return default;
+            catch (KeyNotFoundException)
+            {
+                Add(key, value);
+            }
         }
     }
 
@@ -70,7 +85,7 @@ public class ChainingHashTable<TKey, TValue>
     }
 }
 
-public class Entry<TKey, TValue>
+internal class Entry<TKey, TValue>
 {
     public Entry(TKey key, TValue value, Entry<TKey, TValue>? next = null)
     {
@@ -80,6 +95,6 @@ public class Entry<TKey, TValue>
     }
 
     public TKey Key { get; private set; }
-    public TValue Value { get; private set; }
+    public TValue Value { get; set; }
     public Entry<TKey, TValue>? Next { get; private set; }
 }

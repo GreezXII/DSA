@@ -53,6 +53,33 @@ public class HashTablesTests
         Assert.AreEqual(15, chainingHashTable[new SameHash("D")]);
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(KeyNotFoundException))]
+    public void ChainingHashTable_ReadNonExistingKey_Exception()
+    {
+        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        _ = chainingHashTable["Fred"];
+    }
+
+    [TestMethod]
+    public void Update_Success()
+    {
+        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        chainingHashTable.Add("Fred", 41);
+        Assert.AreEqual(41, chainingHashTable["Fred"]);
+        chainingHashTable["Fred"] = 11;
+        Assert.AreEqual(11, chainingHashTable["Fred"]);
+    }
+    
+    [TestMethod]
+    public void AddOrUpdate_Success()
+    {
+        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        chainingHashTable["Fred"] = 41;
+        Assert.AreEqual(41, chainingHashTable["Fred"]);
+        chainingHashTable["Fred"] = 11;
+        Assert.AreEqual(11, chainingHashTable["Fred"]);
+    }
 }
 
 class  SameHash
