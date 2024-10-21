@@ -10,7 +10,7 @@ public class OrderedChainingHashTableTests
     [TestMethod]
     public void OrderedChainingHashTable_Add_Success()
     {
-        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10, 100);
+        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
         orderedChainingHashTable.Add("Fred", 42);
         orderedChainingHashTable.Add("Marta", 11);
         orderedChainingHashTable.Add("Greg", 55);
@@ -26,7 +26,7 @@ public class OrderedChainingHashTableTests
     [ExpectedException(typeof(ArgumentException))]
     public void OrderedChainingHashTable_AddExistingKey_Exception()
     {
-        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10, 100);
+        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
         orderedChainingHashTable.Add("Fred", 42);
         orderedChainingHashTable.Add("Fred", 11);
     }
@@ -34,7 +34,7 @@ public class OrderedChainingHashTableTests
     [TestMethod]
     public void OrderedChainingHashTable_AddWithChaining_Success()
     {
-        var orderedChainingHashTable = new OrderedChainingHashTable<SameHash, int>(10, 100);
+        var orderedChainingHashTable = new OrderedChainingHashTable<SameHash, int>(10);
         orderedChainingHashTable.Add(new SameHash("A"), 42);
         orderedChainingHashTable.Add(new SameHash("B"), 11);
         orderedChainingHashTable.Add(new SameHash("C"), 55);
@@ -50,14 +50,14 @@ public class OrderedChainingHashTableTests
     [ExpectedException(typeof(KeyNotFoundException))]
     public void OrderedChainingHashTable_ReadNonExistingKey_Exception()
     {
-        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10, 100);
+        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
         _ = orderedChainingHashTable["Fred"];
     }
 
     [TestMethod]
     public void OrderedChainingHashTable_Update_Success()
     {
-        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10, 100);
+        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
         orderedChainingHashTable.Add("Fred", 41);
         Assert.AreEqual(41, orderedChainingHashTable["Fred"]);
         orderedChainingHashTable["Fred"] = 11;
@@ -67,7 +67,7 @@ public class OrderedChainingHashTableTests
     [TestMethod]
     public void OrderedChainingHashTable_AddOrUpdate_Success()
     {
-        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10, 100);
+        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
         orderedChainingHashTable["Fred"] = 41;
         Assert.AreEqual(41, orderedChainingHashTable["Fred"]);
         orderedChainingHashTable["Fred"] = 11;
@@ -88,7 +88,7 @@ public class OrderedChainingHashTableTests
             ("E", 5)
         };
         
-        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(1, 100);
+        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
         foreach (var pair in listOfPairs)
             orderedChainingHashTable.Add(pair.Item1, pair.Item2);
 

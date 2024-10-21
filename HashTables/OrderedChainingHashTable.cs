@@ -2,16 +2,18 @@
 
 public class OrderedChainingHashTable<TKey, TValue>
 {
-    public OrderedChainingHashTable(int bucketsCount, int length)
+    
+    private readonly int _bucketsCount;
+    private readonly Entry<TKey, TValue>?[] _buckets;
+
+    public ProbeSequenceStatistic ProbeSequence { get; }
+    
+    public OrderedChainingHashTable(int bucketsCount)
     {
         _bucketsCount = bucketsCount;
-        _length = length;
         _buckets = new Entry<TKey, TValue>?[_bucketsCount];
+        ProbeSequence = new ProbeSequenceStatistic();
     }
-    
-    private int _bucketsCount;
-    private int _length;
-    private readonly Entry<TKey, TValue>?[] _buckets;
 
     public void Add(TKey key, TValue value)
     {
@@ -24,13 +26,17 @@ public class OrderedChainingHashTable<TKey, TValue>
         {
             entry = new Entry<TKey, TValue>(key, value);
             _buckets[hash] = entry;
+            ProbeSequence.AddProbe(0);
             return;
         }
 
+        int probeCount = 0;
         Entry<TKey, TValue>? previousEntry = null;
         var comparer = Comparer<TKey>.Default;
         while (entry is not null)
         {
+            probeCount++;
+            ProbeSequence.AddProbe(probeCount);
             var compareResult = comparer.Compare(entry.Key, key); 
             if (compareResult == 0)
                 throw new ArgumentException("Key already exists.");

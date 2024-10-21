@@ -9,7 +9,7 @@ public class ChainingHashTablesTests
     [TestMethod]
     public void ChainingHashTable_Add_Success()
     {
-        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        var chainingHashTable = new ChainingHashTable<string, int>(10);
         chainingHashTable.Add("Fred", 42);
         chainingHashTable.Add("Marta", 11);
         chainingHashTable.Add("Greg", 55);
@@ -25,7 +25,7 @@ public class ChainingHashTablesTests
     [ExpectedException(typeof(ArgumentException))]
     public void ChainingHashTable_AddExistingKey_Exception()
     {
-        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        var chainingHashTable = new ChainingHashTable<string, int>(10);
         chainingHashTable.Add("Fred", 42);
         chainingHashTable.Add("Fred", 11);
     }
@@ -33,7 +33,7 @@ public class ChainingHashTablesTests
     [TestMethod]
     public void ChainingHashTable_AddWithChaining_Success()
     {
-        var chainingHashTable = new ChainingHashTable<SameHash, int>(10, 100);
+        var chainingHashTable = new ChainingHashTable<SameHash, int>(10);
         chainingHashTable.Add(new SameHash("A"), 42);
         chainingHashTable.Add(new SameHash("B"), 11);
         chainingHashTable.Add(new SameHash("C"), 55);
@@ -49,14 +49,14 @@ public class ChainingHashTablesTests
     [ExpectedException(typeof(KeyNotFoundException))]
     public void ChainingHashTable_ReadNonExistingKey_Exception()
     {
-        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        var chainingHashTable = new ChainingHashTable<string, int>(10);
         _ = chainingHashTable["Fred"];
     }
 
     [TestMethod]
     public void ChainingHashTable_Update_Success()
     {
-        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        var chainingHashTable = new ChainingHashTable<string, int>(10);
         chainingHashTable.Add("Fred", 41);
         Assert.AreEqual(41, chainingHashTable["Fred"]);
         chainingHashTable["Fred"] = 11;
@@ -66,7 +66,7 @@ public class ChainingHashTablesTests
     [TestMethod]
     public void ChainingHashTable_AddOrUpdate_Success()
     {
-        var chainingHashTable = new ChainingHashTable<string, int>(10, 100);
+        var chainingHashTable = new ChainingHashTable<string, int>(10);
         chainingHashTable["Fred"] = 41;
         Assert.AreEqual(41, chainingHashTable["Fred"]);
         chainingHashTable["Fred"] = 11;
