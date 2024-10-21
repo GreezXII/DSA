@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Other", "Other\Other.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashTables", "HashTables\HashTables.csproj", "{3D7A607D-38CD-492F-AB08-ECA1CF9E998B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F20A093F-9855-4324-90BF-8204CE501230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualization", "Visualization\Visualization.csproj", "{78A91490-CF7A-4DBB-9D54-190C28265013}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,10 @@ Global
 		{3D7A607D-38CD-492F-AB08-ECA1CF9E998B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D7A607D-38CD-492F-AB08-ECA1CF9E998B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D7A607D-38CD-492F-AB08-ECA1CF9E998B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78A91490-CF7A-4DBB-9D54-190C28265013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78A91490-CF7A-4DBB-9D54-190C28265013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78A91490-CF7A-4DBB-9D54-190C28265013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78A91490-CF7A-4DBB-9D54-190C28265013}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +89,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7DF287AF-74F4-4541-9AAA-ADDE4AB4C572} = {D8247B61-534D-4174-9F20-93EC504A8F29}
 		{0CB74F5F-8D2B-42A6-97E6-C25967CFEF5C} = {D8247B61-534D-4174-9F20-93EC504A8F29}
+		{78A91490-CF7A-4DBB-9D54-190C28265013} = {F20A093F-9855-4324-90BF-8204CE501230}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Visualization/App.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/AboutView.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/MainWindow.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/ProbeSequenceGraphView.axaml" value="Visualization/Visualization.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
