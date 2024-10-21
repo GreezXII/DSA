@@ -88,7 +88,7 @@ public class OrderedChainingHashTableTests
             ("E", 5)
         };
         
-        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
+        var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(1);
         foreach (var pair in listOfPairs)
             orderedChainingHashTable.Add(pair.Item1, pair.Item2);
 
