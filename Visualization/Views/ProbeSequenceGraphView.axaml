@@ -10,5 +10,7 @@
     <Design.DataContext>
         <vm:ProbeSequenceGraphViewModel/>
     </Design.DataContext>
-    <uc:Chart PointsData="{Binding Data}" />
+    <uc:Chart PointsData="{Binding Data}" 
+              HorizontalAxisLabel="# Items" 
+              VerticalAxisLabel="Average Probe Sequence Length"/>
 </UserControl>

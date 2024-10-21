@@ -4,13 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using HashTables;
+using Visualization.UserControls;
 
 namespace Visualization.ViewModels;
 
 public class ProbeSequenceGraphViewModel : ViewModelBase
 {
     private const int BucketsCount = 10;
-    public ObservableCollection<List<Point>> Data { get; set; } = new();
+    public ObservableCollection<Graph> Data { get; set; } = new();
 
     public ProbeSequenceGraphViewModel()
     {
@@ -33,8 +34,10 @@ public class ProbeSequenceGraphViewModel : ViewModelBase
             orderedData.Add(orderedPoint);        
         }
         
-        Data.Add(naiveData);
-        Data.Add(orderedData);
+        var naiveGraph = new Graph("Naive", naiveData);
+        Data.Add(naiveGraph);
+        var orderedGraph = new Graph("Ordered", orderedData);
+        Data.Add(orderedGraph);
     }
     
     private double GetProbeSequenceLengthForNaive(int bucketsCount, int itemsCount)
