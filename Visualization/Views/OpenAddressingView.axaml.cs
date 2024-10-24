@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Visualization.Views;
 
-public partial class ProbeSequenceGraphView : UserControl
+public partial class OpenAddressingView : UserControl
 {
-    public ProbeSequenceGraphView()
+    public OpenAddressingView()
     {
         InitializeComponent();
     }

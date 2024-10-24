@@ -6,6 +6,7 @@
         <entry key="Visualization/App.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/Views/AboutView.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/Views/MainWindow.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/OpenAddressingView.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/Views/ProbeSequenceGraphView.axaml" value="Visualization/Visualization.csproj" />
       </map>
     </option>

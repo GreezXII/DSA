@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Visualization.Views;
 
-public partial class AboutView : UserControl
+public partial class ChainingView : UserControl
 {
-    public AboutView()
+    public ChainingView()
     {
         InitializeComponent();
     }

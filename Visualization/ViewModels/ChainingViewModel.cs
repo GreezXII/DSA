@@ -8,12 +8,14 @@ using Visualization.UserControls;
 
 namespace Visualization.ViewModels;
 
-public class ProbeSequenceGraphViewModel : ViewModelBase
+public class ChainingViewModel : ViewModelBase
 {
+    public override string Title => "Chaining";
+
     private const int BucketsCount = 10;
     public ObservableCollection<Graph> Data { get; set; } = new();
 
-    public ProbeSequenceGraphViewModel()
+    public ChainingViewModel()
     {
         CreateChartData();
     }

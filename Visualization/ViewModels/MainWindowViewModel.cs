@@ -1,4 +1,4 @@
-﻿using Avalonia.ReactiveUI;
+﻿using System.Collections.Generic;
 using ReactiveUI;
 
 namespace Visualization.ViewModels;
@@ -7,19 +7,34 @@ public class MainWindowViewModel : ViewModelBase
 {
     public MainWindowViewModel()
     {
-        _currentPage = _pages[0];
+        var hashTablesPages = new List<ViewModelBase>
+        {
+            new ChainingViewModel(),
+            new OpenAddressingViewModel()
+        };
+        var hashTablesNode = new NodeViewModel("Hash Tables", hashTablesPages);
+        NavigationTree = [hashTablesNode];
+
+        _currentPage = hashTablesPages[0];
     }
-    
-    private readonly ViewModelBase[] _pages =
-    [
-        new ProbeSequenceGraphViewModel(),
-        new AboutViewModel()
-    ];
+
+    public List<NodeViewModel> NavigationTree { get; }
 
     public ViewModelBase CurrentPage
     {
         get => _currentPage;
-        private set => this.RaiseAndSetIfChanged(ref _currentPage, value);
+        set => this.RaiseAndSetIfChanged(ref _currentPage, value);
     }
     private ViewModelBase _currentPage;
+}
+
+public sealed class NodeViewModel : ViewModelBase
+{
+    public NodeViewModel(string title, List<ViewModelBase> pages)
+    {
+        Title = title;
+        Pages = pages;
+    }
+
+    public List<ViewModelBase> Pages { get; } 
 }

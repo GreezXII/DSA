@@ -2,12 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:uc="using:Visualization.UserControls"
              xmlns:vm="using:Visualization.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Visualization.Views.AboutView"
-             x:DataType="vm:AboutViewModel">
+             x:Class="Visualization.Views.ChainingView"
+             x:DataType="vm:ChainingViewModel">
     <Design.DataContext>
-        <vm:AboutViewModel />
+        <vm:ChainingViewModel/>
     </Design.DataContext>
-    About
+    <uc:Chart PointsData="{Binding Data}" 
+              HorizontalAxisLabel="# Items" 
+              VerticalAxisLabel="Average Probe Sequence Length"/>
 </UserControl>
