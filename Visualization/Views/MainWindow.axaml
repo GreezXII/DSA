@@ -7,7 +7,9 @@
         x:Class="Visualization.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Visualization">
+        Title="Visualization"
+        MinHeight="600"
+        MinWidth="800">
 
     <Design.DataContext>
         <vm:MainWindowViewModel />
