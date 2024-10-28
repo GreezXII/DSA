@@ -19,7 +19,7 @@
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                     <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
                         <TextBlock Grid.Column="0" Text="Size" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="1" Margin="5,0,5,0" />
+                        <TextBox Grid.Column="1" Margin="5,0,5,0" Text="{Binding Size}"/>
                         <Button Grid.Column="2" Content="Create" 
                                 HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
                     </Grid>
@@ -33,18 +33,16 @@
                     <Grid Margin="5" RowDefinitions="*,*,*" ColumnDefinitions="0.5*,*,*">
                         <!-- Min -->
                         <TextBlock Grid.Column="0" Text="Min" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" />
-                        
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Min}" Margin="5,0,5,5" />
                         <!-- Max -->
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Min" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="1"  Grid.Column="1" Margin="5,0,5,5" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Max" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1"  Grid.Column="1" Text="{Binding Max}" Margin="5,0,5,5" />
                         <Button Grid.Row="1"  Grid.Column="2" Content="Make Items" Margin="0,0,0,5" 
                                 VerticalAlignment="Center" HorizontalAlignment="Stretch" 
                                 HorizontalContentAlignment="Center" />
-                        
                         <!-- # Items -->
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="# Items" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="2"  Grid.Column="1" Margin="5,0,5,5" />
+                        <TextBox Grid.Row="2"  Grid.Column="1" Text="{Binding ItemsNumber}" Margin="5,0,5,5" />
                     </Grid>
                 </Border>
             </StackPanel>
@@ -55,7 +53,7 @@
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                     <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
                         <TextBlock Grid.Column="0" Text="Item" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0,5,0" />
+                        <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding Item}" Margin="5,0,5,0" />
                         <StackPanel Grid.Column="2" >
                             <Button Content="Insert" HorizontalAlignment="Stretch" 
                                     HorizontalContentAlignment="Center" />
@@ -73,20 +71,29 @@
                     <Grid Margin="5" ColumnDefinitions="0.5*,*" RowDefinitions="*,*,*">
                         <!-- Fill % -->
                         <TextBlock Grid.Column="0" Text="Fill %" VerticalAlignment="Center" Margin="0,0,0,5"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Margin="0,0,0,5"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" 
+                                 Text="{Binding FillPercentage}" IsReadOnly="True" 
+                                 Margin="0,0,0,5"/>
                         <!-- Max probe -->
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center" Margin="0,0,0,5"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,5"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" 
+                                 Text="{Binding MaxProbe}" IsReadOnly="True"
+                                 Margin="0,0,0,5"/>
                         <!-- Ave Probe -->
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center" Margin="0,0,0,5"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,5"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" 
+                                 Text="{Binding AverageProbe}" IsReadOnly="True"
+                                 Margin="0,0,0,5"/>
                     </Grid>
                 </Border>
             </StackPanel>
         </StackPanel>
 
         <!-- Data -->
-        <TextBox Grid.Column="1" IsReadOnly="True" />
+        <Grid RowDefinitions="Auto,*" Grid.Column="1" Margin="5" >
+            <TextBlock Text="Data"/>
+            <TextBox Grid.Row="1" IsReadOnly="True" AcceptsReturn="True"/>
+        </Grid>
     </Grid>
 
 </UserControl>

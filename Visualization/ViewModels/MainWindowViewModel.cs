@@ -15,7 +15,7 @@ public class MainWindowViewModel : ViewModelBase
         var hashTablesNode = new NodeViewModel("Hash Tables", hashTablesPages);
         NavigationTree = [hashTablesNode];
 
-        _currentPage = hashTablesPages[0];
+        _currentPage = hashTablesPages[1];
     }
 
     public List<NodeViewModel> NavigationTree { get; }
