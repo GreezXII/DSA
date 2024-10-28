@@ -10,11 +10,7 @@
         <vm:OpenAddressingViewModel />
     </Design.DataContext>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <Grid ColumnDefinitions="300,*">
         <StackPanel>
 
             <!-- HashTable -->
