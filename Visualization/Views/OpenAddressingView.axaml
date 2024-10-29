@@ -3,12 +3,60 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Visualization.ViewModels"
+             xmlns:conv="using:Visualization.Utils.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="Visualization.Views.OpenAddressingView"
              x:DataType="vm:OpenAddressingViewModel">
     <Design.DataContext>
         <vm:OpenAddressingViewModel />
     </Design.DataContext>
+
+    <UserControl.Styles>
+        <Style Selector="DataValidationErrors">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <ContentControl DockPanel.Dock="Right"
+                                        ContentTemplate="{TemplateBinding ErrorTemplate}"
+                                        DataContext="{TemplateBinding Owner}"
+                                        Content="{Binding (DataValidationErrors.Errors)}"
+                                        IsVisible="{Binding (DataValidationErrors.HasErrors)}"/>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          Padding="{TemplateBinding Padding}"/>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter>
+            <Setter Property="ErrorTemplate">
+                <DataTemplate x:DataType="{x:Type x:Object}">
+                    <Canvas Width="14" Height="14" Margin="4 0 1 0" 
+                            Background="Transparent">
+                        <Canvas.Styles>
+                            <Style Selector="ToolTip">
+                                <Setter Property="Background" Value="Red"/>
+                                <Setter Property="BorderBrush" Value="Red"/>
+                            </Style>
+                        </Canvas.Styles>
+                        <ToolTip.Tip>
+                            <ItemsControl ItemsSource="{Binding}" Foreground="White"/>
+                        </ToolTip.Tip>
+                        <Path Data="M14,7 A7,7 0 0,0 0,7 M0,7 A7,7 0 1,0 14,7 M7,3l0,5 M7,9l0,2" 
+                              Stroke="Red" 
+                              StrokeThickness="2"/>
+                    </Canvas>
+                </DataTemplate>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+    
+    <UserControl.Resources>
+        <conv:StringToInt x:Key="StringToInt" />
+    </UserControl.Resources>
 
     <Grid ColumnDefinitions="300,*">
         <StackPanel>
@@ -19,9 +67,11 @@
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                     <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
                         <TextBlock Grid.Column="0" Text="Size" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="1" Margin="5,0,5,0" Text="{Binding Size}"/>
-                        <Button Grid.Column="2" Content="Create" 
-                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                        <TextBox Grid.Column="1" Margin="5,0,5,0"
+                                 Text="{Binding Size, Converter={StaticResource StringToInt}}" />
+                        <Button Grid.Column="2" Content="Create"
+                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                Command="{Binding CreateCommand}" />
                     </Grid>
                 </Border>
             </StackPanel>
@@ -33,66 +83,76 @@
                     <Grid Margin="5" RowDefinitions="*,*,*" ColumnDefinitions="0.5*,*,*">
                         <!-- Min -->
                         <TextBlock Grid.Column="0" Text="Min" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Min}" Margin="5,0,5,5" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Margin="5,0,5,5"
+                                 Text="{Binding Min, Converter={StaticResource StringToInt}}" />
                         <!-- Max -->
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Max" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="1"  Grid.Column="1" Text="{Binding Max}" Margin="5,0,5,5" />
-                        <Button Grid.Row="1"  Grid.Column="2" Content="Make Items" Margin="0,0,0,5" 
-                                VerticalAlignment="Center" HorizontalAlignment="Stretch" 
-                                HorizontalContentAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0,5,5"
+                                 Text="{Binding Max, Converter={StaticResource StringToInt}}" />
+                        <Button Grid.Row="1" Grid.Column="2" Content="Make Items" Margin="0,0,0,5"
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center" 
+                                Command="{Binding MakeItemCommand}"/>
                         <!-- # Items -->
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="# Items" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="2"  Grid.Column="1" Text="{Binding ItemsNumber}" Margin="5,0,5,5" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="5,0,5,5"
+                                 Text="{Binding ItemsNumber, Converter={StaticResource StringToInt}}" />
                     </Grid>
                 </Border>
             </StackPanel>
-            
+
             <!-- Create/Find -->
             <StackPanel Margin="5">
                 <TextBlock Text="Create/Find" />
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                     <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
                         <TextBlock Grid.Column="0" Text="Item" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding Item}" Margin="5,0,5,0" />
-                        <StackPanel Grid.Column="2" >
-                            <Button Content="Insert" HorizontalAlignment="Stretch" 
-                                    HorizontalContentAlignment="Center" />
-                            <Button Content="Find" HorizontalAlignment="Stretch" 
-                                    HorizontalContentAlignment="Center" />
+                        <TextBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0,5,0"
+                                 Text="{Binding Item, Converter={StaticResource StringToInt}}" />
+                        <StackPanel Grid.Column="2">
+                            <Button Content="Insert" HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Command="{Binding InsertCommand}"/>
+                            <Button Content="Find" HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center" 
+                                    Command="{Binding FindCommand}"/>
                         </StackPanel>
                     </Grid>
                 </Border>
             </StackPanel>
-            
+
             <!-- Statistics -->
             <StackPanel Margin="5">
                 <TextBlock Text="Statistics" />
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                     <Grid Margin="5" ColumnDefinitions="0.5*,*" RowDefinitions="*,*,*">
                         <!-- Fill % -->
-                        <TextBlock Grid.Column="0" Text="Fill %" VerticalAlignment="Center" Margin="0,0,0,5"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" 
-                                 Text="{Binding FillPercentage}" IsReadOnly="True" 
-                                 Margin="0,0,0,5"/>
+                        <TextBlock Grid.Column="0" Text="Fill %" VerticalAlignment="Center" Margin="0,0,0,5" />
+                        <TextBox Grid.Row="0" Grid.Column="1"
+                                 Text="{Binding FillPercentage}" IsReadOnly="True"
+                                 Margin="0,0,0,5" />
                         <!-- Max probe -->
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center" Margin="0,0,0,5"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" 
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center"
+                                   Margin="0,0,0,5" />
+                        <TextBox Grid.Row="1" Grid.Column="1"
                                  Text="{Binding MaxProbe}" IsReadOnly="True"
-                                 Margin="0,0,0,5"/>
+                                 Margin="0,0,0,5" />
                         <!-- Ave Probe -->
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center" Margin="0,0,0,5"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" 
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center"
+                                   Margin="0,0,0,5" />
+                        <TextBox Grid.Row="2" Grid.Column="1"
                                  Text="{Binding AverageProbe}" IsReadOnly="True"
-                                 Margin="0,0,0,5"/>
+                                 Margin="0,0,0,5" />
                     </Grid>
                 </Border>
             </StackPanel>
         </StackPanel>
 
         <!-- Data -->
-        <Grid RowDefinitions="Auto,*" Grid.Column="1" Margin="5" >
-            <TextBlock Text="Data"/>
-            <TextBox Grid.Row="1" IsReadOnly="True" AcceptsReturn="True"/>
+        <Grid RowDefinitions="Auto,*" Grid.Column="1" Margin="5">
+            <TextBlock Text="Data" />
+            <TextBox Grid.Row="1" AcceptsReturn="True" IsReadOnly="True"
+                     Text="{Binding Data}" />
         </Grid>
     </Grid>
 
