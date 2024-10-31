@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using HashTables;
 
-namespace Tests;
+namespace Tests.HashTablesTests;
 
 [TestClass]
 public class ChainingHashTablesTests

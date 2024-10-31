@@ -1,8 +1,8 @@
 ﻿namespace HashTables;
 
-public class Entry<TKey, TValue>
+public class LinkedEntry<TKey, TValue>
 {
-    public Entry(TKey key, TValue value, Entry<TKey, TValue>? next = null)
+    public LinkedEntry(TKey key, TValue value, LinkedEntry<TKey, TValue>? next = null)
     {
         Key = key;
         Value = value;
@@ -11,5 +11,5 @@ public class Entry<TKey, TValue>
 
     public TKey Key { get; private set; }
     public TValue Value { get; set; }
-    public Entry<TKey, TValue>? Next { get; set; }
+    public LinkedEntry<TKey, TValue>? Next { get; set; }
 }

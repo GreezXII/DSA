@@ -128,21 +128,21 @@
                     <Grid Margin="5" ColumnDefinitions="0.5*,*" RowDefinitions="*,*,*">
                         <!-- Fill % -->
                         <TextBlock Grid.Column="0" Text="Fill %" VerticalAlignment="Center" Margin="0,0,0,5" />
-                        <TextBox Grid.Row="0" Grid.Column="1"
-                                 Text="{Binding FillPercentage}" IsReadOnly="True"
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                 Text="{Binding FillPercentage}"
                                  Margin="0,0,0,5" />
                         <!-- Max probe -->
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center"
                                    Margin="0,0,0,5" />
-                        <TextBox Grid.Row="1" Grid.Column="1"
-                                 Text="{Binding MaxProbe}" IsReadOnly="True"
-                                 Margin="0,0,0,5" />
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding MaxProbe}"
+                                   Margin="0,0,0,5" />
                         <!-- Ave Probe -->
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Max Probe" VerticalAlignment="Center"
                                    Margin="0,0,0,5" />
-                        <TextBox Grid.Row="2" Grid.Column="1"
-                                 Text="{Binding AverageProbe}" IsReadOnly="True"
-                                 Margin="0,0,0,5" />
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                   Text="{Binding AverageProbe}"
+                                   Margin="0,0,0,5" />
                     </Grid>
                 </Border>
             </StackPanel>

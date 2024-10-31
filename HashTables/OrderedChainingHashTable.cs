@@ -4,14 +4,14 @@ public class OrderedChainingHashTable<TKey, TValue>
 {
     
     private readonly int _bucketsCount;
-    private readonly Entry<TKey, TValue>?[] _buckets;
+    private readonly LinkedEntry<TKey, TValue>?[] _buckets;
 
     public ProbeSequenceStatistic ProbeSequence { get; }
     
     public OrderedChainingHashTable(int bucketsCount)
     {
         _bucketsCount = bucketsCount;
-        _buckets = new Entry<TKey, TValue>?[_bucketsCount];
+        _buckets = new LinkedEntry<TKey, TValue>?[_bucketsCount];
         ProbeSequence = new ProbeSequenceStatistic();
     }
 
@@ -24,14 +24,14 @@ public class OrderedChainingHashTable<TKey, TValue>
         var entry = _buckets[hash];
         if (entry is null)
         {
-            entry = new Entry<TKey, TValue>(key, value);
+            entry = new LinkedEntry<TKey, TValue>(key, value);
             _buckets[hash] = entry;
             ProbeSequence.AddProbe(0);
             return;
         }
 
         int probeCount = 0;
-        Entry<TKey, TValue>? previousEntry = null;
+        LinkedEntry<TKey, TValue>? previousEntry = null;
         var comparer = Comparer<TKey>.Default;
         while (entry is not null)
         {
@@ -52,20 +52,20 @@ public class OrderedChainingHashTable<TKey, TValue>
             }
         }
 
-        Entry<TKey, TValue> newEntry;
+        LinkedEntry<TKey, TValue> newLinkedEntry;
         if (previousEntry is not null)
         {
-            newEntry = new Entry<TKey, TValue>(key, value, previousEntry.Next);
-            previousEntry.Next = newEntry;
+            newLinkedEntry = new LinkedEntry<TKey, TValue>(key, value, previousEntry.Next);
+            previousEntry.Next = newLinkedEntry;
         }
         else
         {
-            newEntry = new Entry<TKey, TValue>(key, value, _buckets[hash]);
-            _buckets[hash] = newEntry;
+            newLinkedEntry = new LinkedEntry<TKey, TValue>(key, value, _buckets[hash]);
+            _buckets[hash] = newLinkedEntry;
         }
     }
     
-    private Entry<TKey, TValue> GetEntry(TKey key)
+    private LinkedEntry<TKey, TValue> GetEntry(TKey key)
     {
         var hash = GetHash(key);
         var entry = _buckets[hash];

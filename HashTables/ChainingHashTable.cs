@@ -5,13 +5,13 @@ namespace HashTables;
 public class ChainingHashTable<TKey, TValue>
 {
     private readonly int _bucketsCount;
-    private readonly Entry<TKey, TValue>?[] _buckets;
+    private readonly LinkedEntry<TKey, TValue>?[] _buckets;
     public ProbeSequenceStatistic ProbeSequence { get; }
     
     public ChainingHashTable(int bucketsCount)
     {
         _bucketsCount = bucketsCount;
-        _buckets = new Entry<TKey, TValue>?[_bucketsCount];
+        _buckets = new LinkedEntry<TKey, TValue>?[_bucketsCount];
         ProbeSequence = new ProbeSequenceStatistic();
     }
 
@@ -23,7 +23,7 @@ public class ChainingHashTable<TKey, TValue>
         var entry = _buckets[hash];
         if (entry is null)
         {
-            entry = new Entry<TKey, TValue>(key, value);
+            entry = new LinkedEntry<TKey, TValue>(key, value);
             _buckets[hash] = entry;
             ProbeSequence.AddProbe(0);
             return;
@@ -41,11 +41,11 @@ public class ChainingHashTable<TKey, TValue>
             entry = entry.Next;
         }
         
-        var newEntry = new Entry<TKey, TValue>(key, value, _buckets[hash]);
+        var newEntry = new LinkedEntry<TKey, TValue>(key, value, _buckets[hash]);
         _buckets[hash] = newEntry;
     }
 
-    private Entry<TKey, TValue> GetEntry(TKey key)
+    private LinkedEntry<TKey, TValue> GetEntry(TKey key)
     {
         var hash = GetHash(key);
         var entry = _buckets[hash];

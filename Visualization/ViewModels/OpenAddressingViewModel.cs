@@ -83,7 +83,7 @@ public class OpenAddressingViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _data, value);
     }
     private string _data = "Data";
-
+    
     public ICommand CreateCommand { get; }
     public ICommand MakeItemCommand { get; }
     public ICommand InsertCommand { get; }

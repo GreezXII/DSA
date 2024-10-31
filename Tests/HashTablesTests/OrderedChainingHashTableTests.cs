@@ -94,7 +94,7 @@ public class OrderedChainingHashTableTests
 
         var type = typeof(OrderedChainingHashTable<string, int>);
         var field = type.GetField("_buckets", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (field!.GetValue(orderedChainingHashTable) is not Entry<string, int>?[] value)
+        if (field!.GetValue(orderedChainingHashTable) is not LinkedEntry<string, int>?[] value)
             throw new InvalidOperationException();
 
         var orderedPairs = listOfPairs.OrderBy(pair => pair.Item1).ToList();
