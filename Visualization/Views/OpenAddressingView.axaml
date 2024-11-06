@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Visualization.ViewModels"
              xmlns:conv="using:Visualization.Utils.Converters"
+             xmlns:aconv="using:Avalonia.Controls.Converters"
+             xmlns:ht="using:HashTables"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="Visualization.Views.OpenAddressingView"
              x:DataType="vm:OpenAddressingViewModel">
@@ -56,6 +58,7 @@
 
     <UserControl.Resources>
         <conv:StringToInt x:Key="StringToInt" />
+        <aconv:EnumToBoolConverter x:Key="EnumToBool" />
     </UserControl.Resources>
 
     <Grid ColumnDefinitions="300,*">
@@ -65,14 +68,25 @@
             <StackPanel Margin="5">
                 <TextBlock Text="HashTable" />
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
-                    <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
-                        <TextBlock Grid.Column="0" Text="Size" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="1" Margin="5,0,5,0"
-                                 Text="{Binding Size, Converter={StaticResource StringToInt}}" />
-                        <Button Grid.Column="2" Content="Create"
-                                HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                                Command="{Binding CreateCommand}" />
-                    </Grid>
+                    <StackPanel>
+                        <WrapPanel>
+                            <RadioButton GroupName="ProbingType" Content="Linear" Margin="5,0,0,0"
+                                         IsEnabled="{Binding CanChangeProbingKind}"
+                                         IsChecked="{Binding ProbingKind, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static ht:ProbingKind.Linear}}" />
+                            <RadioButton GroupName="ProbingType" Content="Quadratic" Margin="5,0,0,0"
+                                         IsEnabled="{Binding CanChangeProbingKind}"
+                                         IsChecked="{Binding ProbingKind, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static ht:ProbingKind.Quadratic}}" />
+                        </WrapPanel>
+
+                        <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
+                            <TextBlock Grid.Column="0" Text="Size" VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" Margin="5,0,5,0"
+                                     Text="{Binding Size, Converter={StaticResource StringToInt}}" />
+                            <Button Grid.Column="2" Content="Create"
+                                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                    Command="{Binding CreateCommand}" />
+                        </Grid>
+                    </StackPanel>
                 </Border>
             </StackPanel>
 
@@ -80,7 +94,7 @@
             <StackPanel Margin="5">
                 <TextBlock Text="Load table" />
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
-                    <Grid Margin="5" RowDefinitions="*,*,*" ColumnDefinitions="0.5*,*,*">
+                    <Grid Margin="5" RowDefinitions="*,*,*,*" ColumnDefinitions="0.5*,*,*">
                         <!-- Min -->
                         <TextBlock Grid.Column="0" Text="Min" VerticalAlignment="Center" />
                         <TextBox Grid.Row="0" Grid.Column="1" Margin="5,0,5,5"
@@ -89,14 +103,19 @@
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Max" VerticalAlignment="Center" />
                         <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0,5,5"
                                  Text="{Binding Max, Converter={StaticResource StringToInt}}" />
-                        <Button Grid.Row="1" Grid.Column="2" Content="Make Items" Margin="0,0,0,5"
-                                VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                Command="{Binding MakeItemCommand}" />
                         <!-- # Items -->
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="# Items" VerticalAlignment="Center" />
                         <TextBox Grid.Row="2" Grid.Column="1" Margin="5,0,5,5"
                                  Text="{Binding ItemsNumber, Converter={StaticResource StringToInt}}" />
+                        <!-- Seed -->
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Seed" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="5,0,5,5"
+                                 Text="{Binding Seed, Converter={StaticResource StringToInt}}" />
+                        <!-- Button -->
+                        <Button Grid.Row="0" Grid.Column="2" Content="Make Items" Margin="0,0,0,5"
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Command="{Binding MakeItemsCommand}" />
                     </Grid>
                 </Border>
             </StackPanel>
@@ -146,13 +165,13 @@
                     </Grid>
                 </Border>
             </StackPanel>
-            
+
             <!-- Clear -->
             <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
                 <Button Grid.Column="2" Content="Clear all" Margin="0,0,0,5"
-                                                                                  VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                                                                                  HorizontalContentAlignment="Center"
-                                                                                  Command="{Binding ClearCommand}" />                
+                        VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding ClearCommand}" />
             </Grid>
         </StackPanel>
 
@@ -167,5 +186,4 @@
             </Border>
         </Grid>
     </Grid>
-
 </UserControl>

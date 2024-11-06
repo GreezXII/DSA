@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
-using Avalonia.Input.TextInput;
 using HashTables;
 using ReactiveUI;
 
@@ -20,7 +19,7 @@ public class OpenAddressingViewModel : ViewModelBase
         get => _size;
         set => this.RaiseAndSetIfChanged(ref _size, value);
     }
-    private int? _size = 101;
+    private int? _size = 100;
 
     [Required(ErrorMessage = ShouldBeIntegerError)]
     [Range(1, 999, ErrorMessage = RangeError)]
@@ -48,6 +47,15 @@ public class OpenAddressingViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _itemsNumber, value);
     }
     private int? _itemsNumber = 50;
+
+    [Required(ErrorMessage = ShouldBeIntegerError)]
+    [Range(0, 999, ErrorMessage = RangeError)]
+    public int? Seed
+    {
+        get => _seed;
+        set => this.RaiseAndSetIfChanged(ref _seed, value);
+    }
+    private int? _seed = 0;
 
     [Required(ErrorMessage = ShouldBeIntegerError)]
     [Range(1, 999, ErrorMessage = RangeError)]
@@ -103,12 +111,26 @@ public class OpenAddressingViewModel : ViewModelBase
     public OpenAddressingHashTable<int,int>? HashTable
     {
         get => _hashTable; 
-        private set => this.RaiseAndSetIfChanged(ref _hashTable, value);
+        set => this.RaiseAndSetIfChanged(ref _hashTable, value);
     }
     private OpenAddressingHashTable<int,int>? _hashTable;
 
+    public ProbingKind ProbingKind
+    {
+        get => _probingKind; 
+        set => this.RaiseAndSetIfChanged(ref _probingKind, value);
+    }
+    private ProbingKind _probingKind = ProbingKind.Linear;
+
+    public bool CanChangeProbingKind
+    {
+        get => _canChangeProbingKind; 
+        set => this.RaiseAndSetIfChanged(ref _canChangeProbingKind, value);
+    }
+    private bool _canChangeProbingKind = true;
+    
     public ICommand CreateCommand { get; }
-    public ICommand MakeItemCommand { get; }
+    public ICommand MakeItemsCommand { get; }
     public ICommand InsertCommand { get; }
     public ICommand FindCommand { get; }
     public ICommand ClearCommand { get; }
@@ -120,18 +142,21 @@ public class OpenAddressingViewModel : ViewModelBase
             size => size.HasValue);
         CreateCommand = ReactiveCommand.Create(ExecuteCreate, canExecuteCreate);
         
-        var canExecuteMakeItem = this.WhenAnyValue(
+        var canExecuteMakeItems = this.WhenAnyValue(
             x => x.Min, 
             x => x.Max,
             x => x.ItemsNumber,
-            (min, max, itemsNumber) => min.HasValue && max.HasValue && itemsNumber.HasValue);
-        MakeItemCommand = ReactiveCommand.Create(ExecuteMakeItem, canExecuteMakeItem);
+            x => x.Seed,
+            x => x.Data,
+            (min, max, itemsNumber, seed, data) => !string.IsNullOrWhiteSpace(data) && seed.HasValue && min.HasValue && max.HasValue && itemsNumber.HasValue);
+        MakeItemsCommand = ReactiveCommand.Create(ExecuteMakeItems, canExecuteMakeItems);
         
         var canExecuteInsertOrFind = this.WhenAnyValue(
             x => x.Item,
             x => x.Min,
             x => x.Max,
-            (item, min, max) => item >= min && item <= max);
+            x => x.Data,
+            (item, min, max, data) => !string.IsNullOrWhiteSpace(data) && item >= min && item <= max);
         InsertCommand = ReactiveCommand.Create(ExecuteInsert, canExecuteInsertOrFind);
         FindCommand = ReactiveCommand.Create(ExecuteFind, canExecuteInsertOrFind);
         
@@ -142,7 +167,7 @@ public class OpenAddressingViewModel : ViewModelBase
         ClearCommand = ReactiveCommand.Create(Clear, canExecute);
         
         this.WhenAnyValue(x => x.Data)
-            .Subscribe(x =>
+            .Subscribe(_ =>
             {
                 FillPercentage = CalculateFillPercentage();
                 MaxProbe = CalculateMaxProbe();
@@ -154,6 +179,7 @@ public class OpenAddressingViewModel : ViewModelBase
     {
         HashTable = null;
         Data = string.Empty;
+        CanChangeProbingKind = true;
     }
 
     private double? CalculateFillPercentage()
@@ -190,11 +216,12 @@ public class OpenAddressingViewModel : ViewModelBase
             return;
         
         var size = Size.Value;
-        HashTable = new OpenAddressingHashTable<int, int>(size);
+        HashTable = new OpenAddressingHashTable<int, int>(size, ProbingKind);
         Data = HashTable.ToString();
+        CanChangeProbingKind = false;
     }
 
-    private void ExecuteMakeItem()
+    private void ExecuteMakeItems()
     {
         if (HashTable is null)
             return;
@@ -207,8 +234,11 @@ public class OpenAddressingViewModel : ViewModelBase
 
         if (!ItemsNumber.HasValue)
             return;
+
+        if (!Seed.HasValue)
+            return;
         
-        var random = new Random();
+        var random = new Random(Seed.Value);
         for (var i = 0; i < ItemsNumber; i++)
         {
             var number = random.Next(Min.Value, Max.Value);
@@ -237,7 +267,7 @@ public class OpenAddressingViewModel : ViewModelBase
         if (!Item.HasValue)
             return;
         
-        var isContain = HashTable.TryGet(Item.Value, out var number);
+        var isContain = HashTable.TryGet(Item.Value, out _);
         if (!isContain)
             return;
 

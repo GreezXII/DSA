@@ -6,17 +6,19 @@ public class OpenAddressingHashTable<TKey, TValue>
 {
     private readonly Entry<TKey, TValue>?[] _entries;
     private readonly EqualityComparer<TKey> _keyComparer;
+    private readonly ProbingKind _probingKind;
 
     public ProbeSequenceStatistic Statistic { get; }
     
     public int Size { get; }
     public int Count { get; private set; }
 
-    public OpenAddressingHashTable(int size)
+    public OpenAddressingHashTable(int size, ProbingKind probingKind)
     {
         Size = size;
         _entries = new Entry<TKey, TValue>?[Size];
         _keyComparer = EqualityComparer<TKey>.Default;
+        _probingKind = probingKind;
         Statistic = new ProbeSequenceStatistic();
     }
 
@@ -25,7 +27,7 @@ public class OpenAddressingHashTable<TKey, TValue>
         int counter = 0;
         while (counter < Size)
         {
-            var hash = GetHash(key, counter);
+            var hash = GetHash(key, counter, _probingKind);
             var isCollision = _entries[hash] is null;
             if (isCollision)
             {
@@ -42,10 +44,10 @@ public class OpenAddressingHashTable<TKey, TValue>
 
     public bool TryGet(TKey key, out TValue? value)
     {
-        int counter = 0;
+        var counter = 0;
         while (counter < Size)
         {
-            var hash = GetHash(key, counter);
+            var hash = GetHash(key, counter, _probingKind);
             var item = _entries[hash];
             if (item is null)
             {
@@ -69,11 +71,17 @@ public class OpenAddressingHashTable<TKey, TValue>
         return false;
     }
 
-    private int GetHash(TKey key, int counter)
+    private int GetHash(TKey key, int counter, ProbingKind probingKind)
     {
         if (key is null)
             throw new ArgumentNullException(nameof(key));
-        return (Math.Abs(key.GetHashCode()) + counter) % Size;
+        var probing = probingKind switch
+        {
+            ProbingKind.Linear => counter,
+            ProbingKind.Quadratic => (int)Math.Round(Math.Pow(counter, 2), MidpointRounding.AwayFromZero),
+            _ => throw new ArgumentOutOfRangeException(nameof(probingKind), probingKind, null)
+        };
+        return (Math.Abs(key.GetHashCode()) + probing) % Size;
     }
 
     public override string ToString()
@@ -108,4 +116,10 @@ public class Entry<TKey, TValue>
     }
 
     public void Delete() => IsDeleted = true;
+}
+
+public enum ProbingKind
+{
+    Linear,
+    Quadratic
 }
