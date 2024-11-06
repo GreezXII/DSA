@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using HashTables;
@@ -47,7 +48,10 @@ public class ChainingViewModel : ViewModelBase
         var chainingHashTable = new ChainingHashTable<string, int>(bucketsCount);
         foreach (var value in GetRandomNumbers(itemsCount))
             chainingHashTable.Add(value.ToString(), value);
-        return chainingHashTable.ProbeSequence.Average;
+        var average = chainingHashTable.ProbeSequence.Average;
+        if (average is null)
+            throw new NullReferenceException(nameof(average));
+        return average.Value;
     }
 
     private double GetProbeSequenceLengthForOrdered(int bucketsCount, int itemsCount)
@@ -55,7 +59,10 @@ public class ChainingViewModel : ViewModelBase
         var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(bucketsCount);
         foreach (var value in GetRandomNumbers(itemsCount))
             orderedChainingHashTable.Add(value.ToString(), value);
-        return orderedChainingHashTable.ProbeSequence.Average;
+        var average = orderedChainingHashTable.ProbeSequence.Average;
+        if (average is null)
+            throw new NullReferenceException(nameof(average));
+        return average.Value;
     }
 
     private int[] GetRandomNumbers(int count)

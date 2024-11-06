@@ -1,28 +1,37 @@
-﻿namespace HashTables;
+﻿using System.Text;
+
+namespace HashTables;
 
 public class OpenAddressingHashTable<TKey, TValue>
 {
-    private readonly int _size;
-    private readonly Entry<TKey, TValue>?[] _keys;
+    private readonly Entry<TKey, TValue>?[] _entries;
     private readonly EqualityComparer<TKey> _keyComparer;
+
+    public ProbeSequenceStatistic Statistic { get; }
+    
+    public int Size { get; }
+    public int Count { get; private set; }
 
     public OpenAddressingHashTable(int size)
     {
-        _size = size;
-        _keys = new Entry<TKey, TValue>?[_size];
+        Size = size;
+        _entries = new Entry<TKey, TValue>?[Size];
         _keyComparer = EqualityComparer<TKey>.Default;
+        Statistic = new ProbeSequenceStatistic();
     }
 
     public bool TryAdd(TKey key, TValue value)
     {
         int counter = 0;
-        while (counter < _size)
+        while (counter < Size)
         {
             var hash = GetHash(key, counter);
-            var isCollision = _keys[hash] is null;
+            var isCollision = _entries[hash] is null;
             if (isCollision)
             {
-                _keys[hash] = new Entry<TKey, TValue>(key, value);;
+                _entries[hash] = new Entry<TKey, TValue>(key, value);
+                Count++;
+                Statistic.AddProbe(counter);
                 return true;
             }
             counter++;
@@ -34,10 +43,10 @@ public class OpenAddressingHashTable<TKey, TValue>
     public bool TryGet(TKey key, out TValue? value)
     {
         int counter = 0;
-        while (counter < _size)
+        while (counter < Size)
         {
             var hash = GetHash(key, counter);
-            var item = _keys[hash];
+            var item = _entries[hash];
             if (item is null)
             {
                 value = default;
@@ -64,7 +73,25 @@ public class OpenAddressingHashTable<TKey, TValue>
     {
         if (key is null)
             throw new ArgumentNullException(nameof(key));
-        return (Math.Abs(key.GetHashCode()) + counter) % _size;
+        return (Math.Abs(key.GetHashCode()) + counter) % Size;
+    }
+
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        foreach (var entry in _entries)
+        {
+            if (entry is null || entry.Value is null)
+            {
+                sb.Append("---");
+            }
+            else
+            {
+                sb.Append(entry.Value.ToString()?.PadLeft(3, ' '));
+            }
+            sb.Append("   ");
+        }
+        return sb.ToString();
     }
 }
 
