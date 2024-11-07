@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.AccessControl;
+using System.Text;
 
 namespace HashTables;
 
@@ -78,10 +79,33 @@ public class OpenAddressingHashTable<TKey, TValue>
         var probing = probingKind switch
         {
             ProbingKind.Linear => counter,
-            ProbingKind.Quadratic => (int)Math.Round(Math.Pow(counter, 2), MidpointRounding.AwayFromZero),
+            ProbingKind.Quadratic => GetQuadraticProbing(counter),
+            ProbingKind.Pseudorandom => GetPseudorandomProbing(key, counter),
+            ProbingKind.Double => GetDoubleHashProbing(key, counter),
             _ => throw new ArgumentOutOfRangeException(nameof(probingKind), probingKind, null)
         };
         return (Math.Abs(key.GetHashCode()) + probing) % Size;
+    }
+
+    private int GetDoubleHashProbing(TKey key, int counter)
+    {
+        if (key is null)
+            throw new ArgumentNullException(nameof(key));
+
+        return counter - 7 % key.GetHashCode();
+    }
+
+    private int GetQuadraticProbing(int counter) => 
+        (int)Math.Round(Math.Pow(counter, 2), MidpointRounding.AwayFromZero);
+
+    private int GetPseudorandomProbing(TKey key, int counter)
+    {
+        if (key is null)
+            throw new ArgumentNullException(nameof(key));
+        
+        var hash = key.GetHashCode();
+        var random = new Random(hash + counter);
+        return random.Next(Size);
     }
 
     public override string ToString()
@@ -121,5 +145,7 @@ public class Entry<TKey, TValue>
 public enum ProbingKind
 {
     Linear,
-    Quadratic
+    Quadratic,
+    Pseudorandom,
+    Double
 }

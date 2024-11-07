@@ -69,14 +69,20 @@
                 <TextBlock Text="HashTable" />
                 <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
                     <StackPanel>
-                        <WrapPanel>
-                            <RadioButton GroupName="ProbingType" Content="Linear" Margin="5,0,0,0"
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+                            <RadioButton Grid.Row="0" Grid.Column="0" GroupName="ProbingType" Content="Linear" Margin="5,0,0,0"
                                          IsEnabled="{Binding CanChangeProbingKind}"
                                          IsChecked="{Binding ProbingKind, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static ht:ProbingKind.Linear}}" />
-                            <RadioButton GroupName="ProbingType" Content="Quadratic" Margin="5,0,0,0"
+                            <RadioButton Grid.Row="0" Grid.Column="1" GroupName="ProbingType" Content="Quadratic" Margin="5,0,0,0"
                                          IsEnabled="{Binding CanChangeProbingKind}"
                                          IsChecked="{Binding ProbingKind, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static ht:ProbingKind.Quadratic}}" />
-                        </WrapPanel>
+                            <RadioButton Grid.Row="1" Grid.Column="0" GroupName="ProbingType" Content="Pseudorandom" Margin="5,0,0,0"
+                                         IsEnabled="{Binding CanChangeProbingKind}"
+                                         IsChecked="{Binding ProbingKind, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static ht:ProbingKind.Pseudorandom}}" />
+                            <RadioButton Grid.Row="1" Grid.Column="1" GroupName="ProbingType" Content="DoubleHashing" Margin="5,0,0,0"
+                                         IsEnabled="{Binding CanChangeProbingKind}"
+                                         IsChecked="{Binding ProbingKind, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static ht:ProbingKind.Double}}"/>
+                        </Grid>
 
                         <Grid Margin="5" ColumnDefinitions="0.5*,*,*">
                             <TextBlock Grid.Column="0" Text="Size" VerticalAlignment="Center" />
