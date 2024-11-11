@@ -20,6 +20,7 @@
     <ProjectReference Include="..\HashTables\HashTables.csproj" />
     <ProjectReference Include="..\LinkedLists\LinkedLists.csproj" />
     <ProjectReference Include="..\Other\Other.csproj" />
+    <ProjectReference Include="..\Recursion\Recursion.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
     <ProjectReference Include="..\Sorting\Sorting.csproj" />
     <ProjectReference Include="..\Trees\Trees.csproj" />
