@@ -12,7 +12,7 @@ public class RecursionTests
         var moves = new List<Move>();
         
         var toh = new TowerOfHanoi(
-            (level, from, to, aux) => moves.Add(new Move(level, from, to)));
+            (level, from, to, _) => moves.Add(new Move(level, from, to)));
         toh.Do(3, 'A', 'C', 'B');
         
         CollectionAssert.AreEqual(new List<Move>
@@ -27,5 +27,5 @@ public class RecursionTests
         }, moves);
     }
     
-    record Move(int Level, char From, char To);
+    private record Move(int Level, char From, char To);
 }
