@@ -8,7 +8,7 @@ public class OpenAddressingTests
     [TestMethod]
     public void LinearProbing_Add_Success()
     {
-        var table = new OpenAddressingHashTable<int, string>(100);
+        var table = new OpenAddressingHashTable<int, string>(100, ProbingKind.Linear);
         for (int i = 0; i < 100; i++)
             table.TryAdd(i, i.ToString());
 
@@ -23,7 +23,7 @@ public class OpenAddressingTests
     [TestMethod]
     public void LinearProbing_Overflow()
     {
-        var table = new OpenAddressingHashTable<int, string>(5);
+        var table = new OpenAddressingHashTable<int, string>(5, ProbingKind.Linear);
         for (int i = 0; i < 5; i++)
         {
             var result = table.TryAdd(i, i.ToString());
@@ -37,7 +37,7 @@ public class OpenAddressingTests
     [TestMethod]
     public void LinearProbing_Get_NotFound()
     {
-        var table = new OpenAddressingHashTable<int, string>(100);
+        var table = new OpenAddressingHashTable<int, string>(100, ProbingKind.Linear);
         var result = table.TryGet(1, out var value);
         Assert.IsFalse(result);
         Assert.IsNull(value);

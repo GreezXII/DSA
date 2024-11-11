@@ -19,7 +19,11 @@ public class ProbeSequenceTests
 
         var naiveAverage = chainingHashTable.ProbeSequence.Average;
         var orderedAverage = orderedChainingHashTable.ProbeSequence.Average;
-        var delta = Math.Abs(naiveAverage - orderedAverage);
+        if (!naiveAverage.HasValue)
+            throw new NullReferenceException(nameof(naiveAverage));
+        if (!orderedAverage.HasValue)
+            throw new NullReferenceException(nameof(orderedAverage));
+        var delta = Math.Abs(naiveAverage.Value - orderedAverage.Value);
         Assert.IsTrue(delta < 1.0);
     }
 
@@ -41,10 +45,10 @@ public class ProbeSequenceTests
     [TestMethod]
     public void ProbeSequence_OrderedVsUnordered_Random()
     {
-        int totalRepeats = 100;
+        const int totalRepeats = 100;
         double naiveAverage = 0;
         double orderedAverage = 0;
-        for (int i = 0; i < totalRepeats; i++)
+        for (var i = 0; i < totalRepeats; i++)
         {
             var chainingHashTable = new ChainingHashTable<string, int>(10);
             var orderedChainingHashTable = new OrderedChainingHashTable<string, int>(10);
@@ -57,8 +61,17 @@ public class ProbeSequenceTests
                 chainingHashTable.Add(value.ToString(), value);
                 orderedChainingHashTable.Add(value.ToString(), value);
             }
-            naiveAverage += chainingHashTable.ProbeSequence.Average;
-            orderedAverage += orderedChainingHashTable.ProbeSequence.Average;
+
+            var newNaiveAverage = chainingHashTable.ProbeSequence.Average;
+            if (!newNaiveAverage.HasValue)
+                throw new NullReferenceException(nameof(newNaiveAverage));
+            
+            var newOrderedAverage = orderedChainingHashTable.ProbeSequence.Average;
+            if (!newOrderedAverage.HasValue)
+                throw new NullReferenceException(nameof(newOrderedAverage));
+            
+            naiveAverage += newNaiveAverage.Value;
+            orderedAverage += newOrderedAverage.Value;
         }
 
         Assert.IsTrue((naiveAverage / totalRepeats) > (orderedAverage / totalRepeats));
