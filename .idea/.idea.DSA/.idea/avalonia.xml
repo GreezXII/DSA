@@ -6,6 +6,10 @@
         <entry key="Visualization/App.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/UserControls/GroupBox.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/Views/AboutView.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/ChainingView.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/Fractals.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/FractalsView.axaml" value="Visualization/Visualization.csproj" />
+        <entry key="Visualization/Views/KochCurvesView.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/Views/MainWindow.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/Views/OpenAddressingView.axaml" value="Visualization/Visualization.csproj" />
         <entry key="Visualization/Views/ProbeSequenceGraphView.axaml" value="Visualization/Visualization.csproj" />

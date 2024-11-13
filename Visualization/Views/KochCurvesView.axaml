@@ -1,0 +1,25 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Visualization.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Visualization.Views.KochCurvesView"
+             x:DataType="vm:KochCurvesViewModel">
+    <Design.DataContext>
+        <vm:KochCurvesViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Depth" VerticalAlignment="Center" Margin="10" />
+            <NumericUpDown x:Name="DepthControl" Value="3" Minimum="0" Maximum="5" FormatString="0" MinWidth="120"
+                           VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Padding="0"
+                           Margin="10" />
+            <Button Content="Draw" Click="Button_OnClick" Width="100" HorizontalContentAlignment="Center" />
+        </StackPanel>
+        <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Visible">
+            <Canvas x:Name="MainCanvas" Height="2000" Width="2000"/>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

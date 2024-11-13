@@ -15,11 +15,6 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(ex =>
-        {
-            // Log the error or show a message
-            Debug.WriteLine($"Unhandled ReactiveUI Error: {ex.Message}");
-        });
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }

@@ -12,10 +12,16 @@ public class MainWindowViewModel : ViewModelBase
             new ChainingViewModel(),
             new OpenAddressingViewModel()
         };
-        var hashTablesNode = new NodeViewModel("Hash Tables", hashTablesPages);
-        NavigationTree = [hashTablesNode];
+        var hashTablesNodes = new NodeViewModel("Hash Tables", hashTablesPages);
 
-        _currentPage = hashTablesPages[1];
+        var fractalsPages = new List<ViewModelBase>
+        {
+            new KochCurvesViewModel()
+        };
+        var fractalNodes = new NodeViewModel("Fractals", fractalsPages);
+
+        NavigationTree = [hashTablesNodes, fractalNodes];
+        _currentPage = fractalsPages[0];
     }
 
     public List<NodeViewModel> NavigationTree { get; }
